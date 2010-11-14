@@ -1,0 +1,9 @@
+This is a quick script written for a presentation at Barcamp London 8
+
+- Displays *.slide files in the directory where it is run
+- Press left / A or right / D to navigate through slides
+- Press Q to quit
+
+For more info on ncurses and Python see:
+http://docs.python.org/library/curses.html
+http://davidbau.com/archives/2006/07/26/python_curses_life.html
