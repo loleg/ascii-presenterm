@@ -2,7 +2,7 @@
 
 import os, curses
 
-class PrezScreen:
+class PresenTerm:
 
 	def __init__(self, screen):
 		self.screen = screen
@@ -10,9 +10,10 @@ class PrezScreen:
 		self.offsety, self.offsetx = -self.height / 2, -self.width / 2
 		self.cur = 0
 		self.slides = []
+		self.dirname = '.' # todo: from arg
 	
 	def readSlides(self):
-		for dirname, dirnames, filenames in os.walk('.'):
+		for dirname, dirnames, filenames in os.walk(self.dirname):
 			for filename in filenames:
 				if filename.count('.slide'):
 					with open(filename) as f:
@@ -24,8 +25,8 @@ class PrezScreen:
 			self.cur = 1
 		if self.cur > len(self.slides):
 			self.cur = len(self.slides)
-		self.screen.addstr(0, 0, 'tmpz: BARCAMP.LONDON.EIGHT: %(cur)s of %(count)s' % \
-			{ 'cur': self.cur, 'count': len(self.slides) }, \
+		self.screen.addstr(0, 0, 'presenterm: %(dir)s: %(cur)s of %(count)s' % \
+			{ 'dir': self.dirname, 'cur': self.cur, 'count': len(self.slides) }, \
 			curses.A_REVERSE)
 			
 	def showSlide(self):
@@ -50,7 +51,7 @@ class PrezScreen:
 			elif key == curses.KEY_RIGHT or key == ord('d'): self.moveSlide(1)
 
 def main(stdscr):
-	screen = PrezScreen(stdscr)
+	screen = PresenTerm(stdscr)
 	screen.main()
  
 curses.wrapper(main)

@@ -1,5 +1,8 @@
 This is a quick script written for a presentation at Barcamp London 8
 
+cd example
+python ../presenterm.py
+
 - Displays *.slide files in the directory where it is run
 - Press left / A or right / D to navigate through slides
 - Press Q to quit
