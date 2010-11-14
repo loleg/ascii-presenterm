@@ -1,26 +1,26 @@
 #!/usr/bin/python
 
+import sys
 import os
 import curses
 
 
 class PresenTerm:
 
-	def __init__(self, screen):
+	def __init__(self, screen, dirname='.'):
 		self.screen = screen
 		self.height, self.width = screen.getmaxyx()
 		self.offsety, self.offsetx = -self.height / 2, -self.width / 2
 		self.cur = 0
 		self.slides = []
-		self.dirname = '.'  # TODO: from arg
+		self.dirname = dirname
 
 	def readSlides(self):
-		for dirname, dirnames, filenames in os.walk(self.dirname):
-			for filename in filenames:
-				if filename.count('.slide'):
-					with open(filename) as f:
-						self.slides.append(f.read())
-					f.close()
+		for filename in os.listdir(self.dirname):
+			filename = os.path.join(self.dirname, filename)
+			if os.path.isfile(filename) and filename.endswith('.slide'):
+				with open(filename) as f:
+					self.slides.append(f.read())
 
 	def showCounter(self):
 		if self.cur < 1:
@@ -59,7 +59,13 @@ class PresenTerm:
 
 
 def main(stdscr):
-	screen = PresenTerm(stdscr)
+	try:
+		slides_dir = os.path.abspath(sys.argv[1])
+	except IndexError:
+		slides_dir = os.getcwd()
+	screen = PresenTerm(stdscr, slides_dir)
 	screen.main()
 
-curses.wrapper(main)
+
+if __name__ == "__main__":
+	curses.wrapper(main)
